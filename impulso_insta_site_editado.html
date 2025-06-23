@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Impulso Insta - Serviços Sociais</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+  }
+  header {
+    background-color: #b30000;
+    color: white;
+    padding: 20px 0;
+  }
+  .container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #111;
+    box-shadow: 0 0 10px rgba(255,0,0,0.3);
+    margin-top: 20px;
+    border-radius: 10px;
+    text-align: left;
+  }
+  h2, h3 {
+    color: #ff0000;
+    text-align: center;
+  }
+  .service {
+    margin: 20px 0;
+    border: 1px solid #ff0000;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #aaa;
+  }
+  .service p {
+    margin: 4px 0;
+    font-size: 0.95em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Impulso Insta</h1>
+  <p>Seu parceiro em crescimento de redes sociais</p>
+</header>
+
+<div class="container" id="login-container">
+  <h2>Login</h2>
+  <form id="login-form">
+    <label>Email:</label><br>
+    <input type="email" id="email" required><br><br>
+    <label>Senha:</label><br>
+    <input type="password" id="senha" required><br><br>
+    <button type="submit" class="btn">Entrar</button>
+  </form>
+</div>
+
+<div class="container" id="site-container" style="display:none;">
+  <h2>Serviços Disponíveis</h2>
+
+  <div class="service"><h3>Curtidas no Instagram</h3></div>
+  <div class="service"><h3>Curtidas no TikTok</h3></div>
+  <div class="service"><h3>Seguidores Instagram Brasileiros com Garantia</h3><p>Garantia cobre reposição em caso de queda.</p></div>
+  <div class="service"><h3>Seguidores Instagram Mundiais com Garantia</h3><p>Garantia cobre reposição em caso de queda.</p></div>
+  <div class="service"><h3>Seguidores Instagram Mundiais sem Garantia</h3></div>
+  <div class="service"><h3>Curtidas Brasileiras com Garantia</h3><p>Garantia cobre reposição em caso de queda.</p></div>
+  <div class="service"><h3>Curtidas Mundiais com Garantia</h3><p>Garantia cobre reposição em caso de queda.</p></div>
+
+  <h3>Carrinho</h3>
+  <ul id="carrinho"></ul>
+  <p><strong>Total: R$ <span id="total">0.00</span></strong></p>
+
+  <button class="btn" onclick="enviarComprovante()">Enviar Comprovante</button>
+
+  <footer>
+    <p>Instagram: <a href="https://instagram.com/impulso._insta" target="_blank" style="color: #ff4d4d;">@impulso._insta</a></p>
+    <p>&copy; 2025 Impulso Insta. Todos os direitos reservados.</p>
+  </footer>
+</div>
+
+<script>
+function gerarServicos(precoInicial, incremento, max, passo, container) {
+  let preco = precoInicial;
+  for(let i = passo; i <= max; i += passo) {
+    let p = document.createElement("p");
+    let btn = document.createElement("button");
+    btn.innerText = "Adicionar ao Carrinho";
+    btn.className = "btn";
+    btn.onclick = () => adicionarCarrinho(`${i} - R$ ${preco.toFixed(2)}`, preco);
+    p.innerHTML = `${i} - R$ ${preco.toFixed(2)} `;
+    p.appendChild(btn);
+    container.appendChild(p);
+    preco += incremento;
+  }
+}
+
+const curtidasInstagram = document.querySelectorAll(".service")[0];
+const curtidasTiktok = document.querySelectorAll(".service")[1];
+const seguidoresBrGarantia = document.querySelectorAll(".service")[2];
+const seguidoresMundialGarantia = document.querySelectorAll(".service")[3];
+const seguidoresMundialSemGarantia = document.querySelectorAll(".service")[4];
+const curtidasBrGarantia = document.querySelectorAll(".service")[5];
+const curtidasMundialGarantia = document.querySelectorAll(".service")[6];
+
+gerarServicos(1.50, 0.50, 3000, 100, curtidasInstagram);
+gerarServicos(1.50, 0.50, 3000, 100, curtidasTiktok);
+gerarServicos(2.00, 0.50, 3000, 50, seguidoresBrGarantia);
+gerarServicos(2.00, 0.50, 3000, 50, seguidoresMundialGarantia);
+gerarServicos(1.50, 0.50, 3000, 50, seguidoresMundialSemGarantia);
+gerarServicos(2.00, 0.50, 3000, 50, curtidasBrGarantia);
+gerarServicos(2.00, 0.50, 3000, 50, curtidasMundialGarantia);
+
+let totalCarrinho = 0;
+function adicionarCarrinho(item, preco) {
+  const carrinho = document.getElementById("carrinho");
+  let li = document.createElement("li");
+  li.innerText = item;
+  carrinho.appendChild(li);
+  totalCarrinho += preco;
+  document.getElementById("total").innerText = totalCarrinho.toFixed(2);
+}
+
+function enviarComprovante() {
+  const itens = [...document.querySelectorAll("#carrinho li")].map(li => li.innerText);
+  if (itens.length === 0) {
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+  let mensagem = "Você comprou:\n\n" + itens.join("\n") + `\n\nTotal: R$ ${totalCarrinho.toFixed(2)}`;
+  alert(mensagem);
+}
+
+document.getElementById("login-form").addEventListener("submit", function(e){
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  if(email && senha){
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("site-container").style.display = "block";
+  } else {
+    alert("Preencha email e senha!");
+  }
+});
+</script>
+
+</body>
+</html>
